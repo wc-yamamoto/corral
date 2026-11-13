@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!-- Corral: an open pen (a C with its gate open) holding one agent. White on black. -->
+  <!-- macOS icon grid: an 824px rounded square centered on 1024; the rest stays transparent -->
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="#000"/>
+  <!-- a hairline so the black square still has an edge on a dark Dock -->
+  <rect x="101.5" y="101.5" width="821" height="821" rx="183.5" fill="none" stroke="#fff" stroke-opacity="0.12" stroke-width="3"/>
+
+  <!-- Scaled down a touch, and nudged right: the open side makes the C look left-heavy. -->
+  <g transform="translate(530 512) scale(0.9) translate(-512 -512)">
+  <!-- the pen: a ring open on the right, from -40° to 40° -->
+  <path d="M 672.9 377 A 210 210 0 1 0 672.9 647" fill="none" stroke="#fff" stroke-width="92" stroke-linecap="round"/>
+  <!-- the agent inside -->
+  <circle cx="512" cy="512" r="58" fill="#fff"/>
+  </g>
+</svg>

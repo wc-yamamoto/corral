@@ -1,0 +1,47 @@
+{
+  "name": "corral",
+  "productName": "Corral",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Desktop app for terminals and coding agents: spaces, tabs, split panes, an agents sidebar, and a core that keeps terminals running when the window closes.",
+  "main": "dist/main.js",
+  "bin": {
+    "corral": "bin/corral"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "start": "npm run build && electron .",
+    "dev": "node scripts/build.mjs --watch",
+    "package": "node scripts/package.mjs",
+    "icon": "node scripts/icon.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "core:stop": "node dist/cli.js stop",
+    "postinstall": "node scripts/fix-pty.mjs"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@xterm/addon-serialize": "^0.14.0",
+    "@xterm/headless": "^6.0.0",
+    "node-pty": "^1.1.0"
+  },
+  "devDependencies": {
+    "@electron/packager": "^20.3.0",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@xterm/addon-fit": "^0.11.0",
+    "@xterm/addon-web-links": "^0.12.0",
+    "@xterm/xterm": "^6.0.0",
+    "electron": "^45.3.1",
+    "esbuild": "^0.28.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "node-pty": false
+  }
+}
