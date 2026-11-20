@@ -396,7 +396,7 @@ export class Core {
     if (touched) this.changed(false);
   }
 
-  report(terminalId: string, status: AgentStatus | "clear", kind?: string) {
+  report(terminalId: string, status: AgentStatus | "clear", kind?: string, message?: string) {
     const t = this.state.terminals[terminalId];
     if (!t) throw new Error(`no terminal ${terminalId}`);
     if (status === "clear") {
@@ -405,7 +405,7 @@ export class Core {
     }
     const agentKindName = kind ?? t.agent?.kind ?? "agent";
     const effective = status === "done" && this.watched.has(terminalId) ? "idle" : status;
-    this.patchTerminal(terminalId, { agent: { kind: agentKindName, status: effective, reported: true, since: Date.now() } }, false);
+    this.patchTerminal(terminalId, { agent: { kind: agentKindName, status: effective, reported: true, since: Date.now(), message } }, false);
   }
 
   private async scan() {

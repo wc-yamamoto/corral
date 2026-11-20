@@ -118,7 +118,7 @@ function handle(client: Client, msg: ClientMessage) {
       break;
     case "report":
       try {
-        core.report(msg.terminalId, msg.status, msg.kind);
+        core.report(msg.terminalId, msg.status, msg.kind, msg.message);
         send(client.socket, { type: "ok" });
       } catch (err) {
         send(client.socket, { type: "error", message: (err as Error).message });

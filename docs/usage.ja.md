@@ -115,6 +115,7 @@ Corral のターミナルでは `corral` コマンドが使えます。
 ```sh
 corral report working|blocked|done|idle [--kind 名前]
 corral report clear     # 報告をやめて推測に戻す
+corral report done --message "ログインのバグを直した"   # 通知に表示する
 ```
 
 Claude Code なら、`~/.claude/settings.json` にフックを追加すると自動で報告します。
@@ -123,11 +124,13 @@ Claude Code なら、`~/.claude/settings.json` にフックを追加すると自
 {
   "hooks": {
     "UserPromptSubmit": [{ "hooks": [{ "type": "command", "command": "[ -n \"$CORRAL_TERMINAL_ID\" ] && corral report working --kind claude || true" }] }],
-    "Notification": [{ "hooks": [{ "type": "command", "command": "[ -n \"$CORRAL_TERMINAL_ID\" ] && corral report blocked --kind claude || true" }] }],
-    "Stop": [{ "hooks": [{ "type": "command", "command": "[ -n \"$CORRAL_TERMINAL_ID\" ] && corral report done --kind claude || true" }] }]
+    "Notification": [{ "hooks": [{ "type": "command", "command": "[ -n \"$CORRAL_TERMINAL_ID\" ] && corral report blocked --kind claude --hook || true" }] }],
+    "Stop": [{ "hooks": [{ "type": "command", "command": "[ -n \"$CORRAL_TERMINAL_ID\" ] && corral report done --kind claude --hook || true" }] }]
   }
 }
 ```
+
+`--hook` を付けると、Claude が何を終えたか、何を待っているかをフックの入力から取り出して通知に表示します。メッセージがないときは、Claude Code がターミナルのタイトルに付ける作業名を表示します。
 
 このフックは Corral の外では何もしないので、ほかのターミナルで Claude Code を使っても影響はありません。
 

@@ -31,6 +31,8 @@ export interface AgentInfo {
   /** Set when the status came from `corral report` rather than from watching the screen. */
   reported: boolean;
   since: number;
+  /** What the agent said along with its reported status, e.g. what it finished. Cleared when the status changes. */
+  message?: string;
 }
 
 export interface TerminalInfo {
@@ -73,7 +75,7 @@ export type ClientMessage =
   | { type: "resize"; terminalId: string; cols: number; rows: number }
   | { type: "attach"; terminalIds: string[] }
   | { type: "view"; visible: string[]; focused: boolean }
-  | { type: "report"; terminalId: string; status: AgentStatus | "clear"; kind?: string }
+  | { type: "report"; terminalId: string; status: AgentStatus | "clear"; kind?: string; message?: string }
   | { type: "send"; terminalId: string; text: string; submit: boolean }
   | { type: "read"; terminalId: string; lines: number }
   | { type: "wait"; terminalId: string; timeoutMs: number; startMs: number }

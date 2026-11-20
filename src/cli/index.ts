@@ -3,6 +3,7 @@
 import net from "node:net";
 import type { AgentStatus, ClientMessage, ServerMessage, State } from "../shared/model";
 import { folderName, panes } from "../shared/tree";
+import { hookMessage } from "./hook";
 import { socketPath } from "../shared/paths";
 import { onMessages, send } from "../shared/wire";
 
@@ -18,6 +19,8 @@ const USAGE = `usage: corral <command>
   wait <t> [--timeout S]     wait until the agent in t stops working (default 600s)
   report <status> [--kind K] report this terminal's agent status
                              status: working | blocked | done | idle | clear
+       [--message M]         say what it finished or waits for (shown in the notification)
+       [--hook]              take the message from a Claude Code hook's JSON on stdin
   stop                       stop the core (ends every terminal; the layout is kept)
 
 <t> is a terminal id from "corral ls", such as t3.
@@ -164,7 +167,9 @@ async function main() {
       }
       const terminalId = flag(args, "--terminal") ?? process.env.CORRAL_TERMINAL_ID;
       if (!terminalId) throw new Error("not inside a corral terminal; pass --terminal <id>");
-      const res = await request({ type: "report", terminalId, status, kind: flag(args, "--kind") });
+      let message = flag(args, "--message");
+      if (args.includes("--hook") && !process.stdin.isTTY) message ??= hookMessage(await readStdin());
+      const res = await request({ type: "report", terminalId, status, kind: flag(args, "--kind"), message });
       if (res.type === "error") throw new Error(res.message);
       break;
     }
