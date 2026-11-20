@@ -7,7 +7,7 @@ import { App } from "./App";
 import { corral } from "./bridge";
 import { act } from "./commands";
 import { startKeys } from "./keys";
-import { spaceLabel, tabLabel } from "./labels";
+import { spaceLabel, tabLabel, titleTask } from "./labels";
 import { startStore, visibleTerminals } from "./store";
 
 /** Tell the user when an agent they are not looking at needs them, and keep the dock badge current. */
@@ -21,7 +21,9 @@ function notifyAgents(prev: State | undefined, next: State) {
     if (before === t.agent!.status || watched.has(t.id)) continue;
     const where = locate(next, t.id);
     const title = `${t.agent!.kind} ${t.agent!.status === "blocked" ? "needs you" : "is done"}`;
-    const body = where ? `${spaceLabel(next, where.space)} › ${tabLabel(next, where.tab)}` : t.cwd;
+    const place = where ? `${spaceLabel(next, where.space)} › ${tabLabel(next, where.tab)}` : t.cwd;
+    const what = t.agent!.message ?? titleTask(t.title);
+    const body = what ? `${what}\n${place}` : place;
     const n = new Notification(title, { body, silent: false });
     n.onclick = () => {
       window.focus();

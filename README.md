@@ -56,6 +56,7 @@ An agent can report its own status instead of being guessed. Inside a Corral ter
 ```sh
 corral report working|blocked|done|idle [--kind <name>]
 corral report clear     # go back to guessing
+corral report done --message "Fixed the login bug"   # shown in the notification
 ```
 
 For Claude Code, add hooks to `~/.claude/settings.json`:
@@ -64,12 +65,14 @@ For Claude Code, add hooks to `~/.claude/settings.json`:
 {
   "hooks": {
     "UserPromptSubmit": [{ "hooks": [{ "type": "command", "command": "[ -n \"$CORRAL_TERMINAL_ID\" ] && corral report working --kind claude || true" }] }],
-    "Notification": [{ "hooks": [{ "type": "command", "command": "[ -n \"$CORRAL_TERMINAL_ID\" ] && corral report blocked --kind claude || true" }] }],
-    "Stop": [{ "hooks": [{ "type": "command", "command": "[ -n \"$CORRAL_TERMINAL_ID\" ] && corral report done --kind claude || true" }] }]
+    "Notification": [{ "hooks": [{ "type": "command", "command": "[ -n \"$CORRAL_TERMINAL_ID\" ] && corral report blocked --kind claude --hook || true" }] }],
+    "Stop": [{ "hooks": [{ "type": "command", "command": "[ -n \"$CORRAL_TERMINAL_ID\" ] && corral report done --kind claude --hook || true" }] }]
   }
 }
 ```
 
+With `--hook`, the notification says what Claude finished or is waiting for, taken from the hook's input.
+Without a message, it shows the task Claude Code names in the terminal title.
 The hooks do nothing outside Corral.
 
 ## Make it yours

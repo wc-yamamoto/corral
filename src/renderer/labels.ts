@@ -27,6 +27,15 @@ export function tabLabel(state: State, tab: Tab) {
   return terminalLabel(pane && state.terminals[pane.terminalId]);
 }
 
+// Claude Code and others name the task in the title, behind a spinner or ✳.
+const TITLE_TASK = /^[⠀-⣿✶✻✽✢✳·*]\s+(.+)$/;
+
+/** The task an agent's title names, if it names one. */
+export function titleTask(title: string) {
+  const task = title.match(TITLE_TASK)?.[1].trim();
+  return task && !/^claude code$/i.test(task) ? task : undefined;
+}
+
 const RANK: Record<AgentStatus, number> = { blocked: 0, done: 1, working: 2, idle: 3 };
 
 /** Agents, the ones that need you first. */
